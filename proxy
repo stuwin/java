@@ -1,0 +1,61 @@
+
+
+public class StuWin implements Stu{
+
+    private String name;
+    private String passwd;
+
+    public StuWin(String name,String passwd){
+        this.name = name;
+        this.passwd = passwd;
+    }
+
+    @Override
+    public String print(String name,String passwd){
+        return "helloWorld_print";
+    }
+
+    public static void main(String[] args) {
+
+        Stu stu = new StuWin("zhangsan","19107");
+        Stu stuproxy = (Stu) ScheduleProxy.newInstance(stu);
+
+        System.out.println(stuproxy.print("name","1222"));
+
+    }
+}
+public interface Stu {
+    String print(String name,String passwd);
+}
+public class ScheduleProxy implements InvocationHandler {
+    private final static Log log = LogFactory.getLog(ScheduleProxy.class);
+    private Object delegate;
+
+    public ScheduleProxy(Object delegate) {
+        this.delegate = delegate;
+    }
+
+    public static Object newInstance(Object obj) {
+        return Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), new ScheduleProxy(obj));
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        String input = null;
+        try {
+            input = "method = [" + method.getName() + "], args = [" + Arrays.toString(args) + "]";
+            checkArgsNull(method, args);
+
+            Object result = method.invoke(delegate, args);
+//            System.out.println(result);
+            return result;
+
+        } catch (Throwable throwable) {
+            if (throwable instanceof ServiceException || Objects.nonNull(throwable = throwable.getCause())) {
+                log.error("{}:", input, throwable);
+                throw throwable;
+            }
+            log.error("{}:", input, throwable);
+            throw new ServiceException(ScheduleErrorCodes.SYSTEM_ERROR, input, throwable);
+        }
+    }
