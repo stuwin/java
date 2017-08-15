@@ -1,0 +1,42 @@
+JPA
+
+全称Java Persistence API。
+
+JPA通过JDK 5.0注解或XML描述对象－关系表的映射关系，并将运行期的实体对象持久化到数据库中。
+
+百度百科：http://baike.baidu.com/view/1036852.htm
+
+ 
+
+JTA
+
+即java Transaction API，译为Java事务API。
+
+JTA允许应用程序执行分布式事务处理——在两个或多个网络计算机资源上访问并且更新数据。JDBC驱动程序的JTA支持极大地增强了数据访问能力。
+
+百度百科：http://baike.baidu.com/view/512788.htm
+
+ 
+
+JMS
+
+即Java消息服务（Java Message Service）。
+
+JMS（Java Messaging Service）是Java平台上有关面向消息中间件的技术规范，它便于消息系统中的Java应用程序进行消息交换,并且通过提供标准的产生、发送、接收消息的接口简化企业应用的开发，翻译为Java消息服务。
+
+百度百科：http://baike.baidu.com/view/157103.htm
+
+ 
+
+CRUD
+
+        CRUD是指在做计算处理时的增加(Create)、查询(Retrieve)（重新得到数据）、更新(Update)和删除(Delete)几个单词的首字母简写。主要被用在描述软件系统中数据库或者持久层的基本操作功能。
+英文释义
+　　In computing, CRUD is an acronym for create, retrieve, update, and delete. It is used to refer to the basic functions of a database or persistence layer in a software system.
+　　C reate new records
+
+　　R etrieve existing records
+
+　　U pdate existing records
+
+　　D elete existing records.
