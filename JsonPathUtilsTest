@@ -1,0 +1,55 @@
+public class JsonPathUtilsTest {
+    public String inputMsg = new JSONObject().toJSONString();
+
+    @Test
+    public void parseInputMsg() throws ServiceException {
+        System.out.println(JsonPathUtils.parseResultMsg(inputMsg, "$.result", true));
+    }
+
+    @Test
+    public void test() {
+        String input = new JSONObject() {{
+            put("score", 5);
+        }}.toJSONString();
+        Object document = Configuration.defaultConfiguration().jsonProvider().parse(input);
+        Object obj = JsonPath.read(document, "$.score");
+        BigDecimal actual = new BigDecimal(obj.toString());
+        System.out.println(actual.intValue());
+    }
+
+    @Test
+    public void isJsonPath() {
+        System.out.println(JsonPathUtils.isJsonPath("$asdas"));
+    }
+
+    @Test
+    public void isJSON() {
+        System.out.println(JsonPathUtils.isJSON("asdasdasd"));
+    }
+
+    @Test
+    public void parseValue() throws ServiceException {
+        String input = new JSONObject() {
+            {
+                put("key1", "value1");
+                put("key2", "value2");
+                put("key3", "value3");
+            }
+        }.toString();
+        System.out.println(JsonPathUtils.parseValue(input, "$.key2"));
+        System.out.println(JsonPathUtils.parseValue(input, "default value"));
+        System.out.println(JsonPathUtils.parseValue(input, new JSONObject() {{
+            put("show_key3", "$.key3");
+        }}).toString());
+        System.out.println(JsonPathUtils.parseValue(input, new JSONArray() {{
+            add("$.key1");
+            add("$.key2");
+            add("$.key3");
+        }}.toString()));
+    }
+
+    @Test
+    public void parseTimestamp() throws ParseException {
+        System.out.println(JsonPathUtils.parseTimestamp(new Date()));
+    }
+}
