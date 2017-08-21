@@ -1,0 +1,40 @@
+@Aspect
+@Component
+public class logArgs {
+
+    private static final Logger logger = LoggerFactory.getLogger(logArgs.class);
+
+    @Before("execution(* .*(..))")
+    public void before(JoinPoint point) {
+        System.out.printf("前置增强before2 %s%n", point.getKind());
+    }
+    @AfterReturning(value = "execution(**(..))", returning = "result")
+    public void afterReturning(JoinPoint point, Object result) {
+        System.out.printf("后置增强, 结果为 %s%n", result);
+    }
+
+    @Around("execution(* .*.*(..))")
+    public Object around(ProceedingJoinPoint point) throws Throwable {
+        long start = System.currentTimeMillis();
+        logger.debug("method:%s+input:%s",point,point.getArgs());
+        Object result = point.proceed(point.getArgs());
+        long time = System.currentTimeMillis() - start;
+
+        System.out.printf("method %s invoke consuming %d ms%n", point.toLongString(), time);
+
+        return result;
+    }
+
+    @AfterThrowing(value = "execution(* .*(..))", throwing = "ex")
+    public void afterThrowing(JoinPoint point, Throwable ex) {
+        String message = new StringBuilder("method ").append(point.getSignature().getName()).append(" error").toString();
+        System.out.println(message);
+
+        logger.error("{},", message, ex);
+    }
+    @After("execution(* .*(..))")
+    public void after(JoinPoint point) {
+        System.out.println("最终通知, 释放资源");
+    }
+
+}
